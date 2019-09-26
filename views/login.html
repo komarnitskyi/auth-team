@@ -1,25 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Login</title>
+        <link rel="stylesheet" href="../static/css/styles.css" />
+    </head>
 
-<head>
-   <meta charset="UTF-8" />
-   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-   <title>Login</title>
-   <link rel="stylesheet" href="../static/css/styles.css" />
-</head>
-
-<body>
-   <div class="container">
-      <div class="form">
-         <form action="/login" method="get">
-            <p>Authorization</p>
-            <input type="text" name="login" placeholder="Login" /><br />
-            <input type="password" name="login" placeholder="Password" /><br />
-            <input type="submit" value="login" />
-         </form>
-      </div>
-   </div>
-</body>
-
+    <body>
+        <div class="container">
+            <div class="form">
+                <form action="/login" method="POST">
+                    <p>Authorization</p>
+                    <input type="text" name="login" placeholder="Login" /><br />
+                    <input type="password" name="login" placeholder="Password" /><br />
+                    <input type="submit" id="login-btn" value="login" />
+                </form>
+            </div>
+        </div>
+        <script src="./../static/scripts/script.js"></script>
+    </body>
 </html>
