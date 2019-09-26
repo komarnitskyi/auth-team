@@ -12,19 +12,73 @@ body {
    background-size: cover;
 }
 
+header {
+   display: flex;
+   justify-content: flex-end;
+   align-items: center;
+   height: 60px;
+   width: 100%;
+   background-color: #000;
+}
+
+header a {
+   text-transform: uppercase;
+   letter-spacing: 5px;
+   text-decoration: none;
+   font-size: 20px;
+   color: #fff;
+   margin-right: 20px;
+}
+
+header a:hover {
+   color: yellow;
+}
+
 .container {
    display: flex;
    justify-content: center;
    align-items: center;
    max-width: 1200px;
-   height: 100vh;
+   height: calc(100vh - 60px);
    width: 100%;
    margin: 0 auto;
+}
+
+.container h1 {
+   text-align: center;
+   font-size: 55px;
+   color: yellow;
+   text-shadow:
+      -0 -2px 4px #000000,
+      0 -2px 4px #000000,
+      -0 2px 4px #000000,
+      0 2px 4px #000000,
+      -2px -0 4px #000000,
+      2px -0 4px #000000,
+      -2px 0 4px #000000,
+      2px 0 4px #000000,
+      -1px -2px 4px #000000,
+      1px -2px 4px #000000,
+      -1px 2px 4px #000000,
+      1px 2px 4px #000000,
+      -2px -1px 4px #000000,
+      2px -1px 4px #000000,
+      -2px 1px 4px #000000,
+      2px 1px 4px #000000,
+      -2px -2px 4px #000000,
+      2px -2px 4px #000000,
+      -2px 2px 4px #000000,
+      2px 2px 4px #000000,
+      -2px -2px 4px #000000,
+      2px -2px 4px #000000,
+      -2px 2px 4px #000000,
+      2px 2px 4px #000000;
 }
 
 .form {
    background-color: #f0f0f0;
    box-sizing: border-box;
+   width: 400px;
    padding: 20px;
    border: 3px solid #000;
    border-radius: 40px;
@@ -50,6 +104,8 @@ input {
    border-radius: 20px;
    margin-bottom: 20px;
    text-align: center;
+   color: rgb(18, 177, 124);
+
 }
 
 input:focus {
@@ -58,6 +114,7 @@ input:focus {
 
 input::placeholder {
    color: #000;
+   font-size: 16px;
    text-align: center;
    letter-spacing: 5px;
 }
@@ -65,14 +122,20 @@ input::placeholder {
 input:focus::placeholder {
    color: rgb(18, 177, 124);
    letter-spacing: 5px;
+}
 
+input[type='text'],
+input[type='password'] {
+   width: 300px;
+   font-size: 18px;
 }
 
 input[type='submit'] {
    background-color: #000;
    color: #fff;
-   /* width: 70px; */
    padding: 10px;
+   text-transform: uppercase;
+   letter-spacing: 5px;
    cursor: pointer;
    margin-bottom: 0;
    border: none;
@@ -81,8 +144,6 @@ input[type='submit'] {
 }
 
 input[type='submit']:hover {
-   background-color: #fff;
-   color: #000;
+   color: yellow;
    transition: .4s ease;
-   /* border-radius: 10px; */
 }
