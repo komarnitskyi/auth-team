@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "auth-team",
   "version": "1.0.0",
   "description": "",
@@ -24,4 +25,31 @@
     "fs": "0.0.1-security",
     "path": "^0.12.7"
   }
+=======
+    "name": "auth-team",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/rosyurch/auth-team.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/rosyurch/auth-team/issues"
+    },
+    "homepage": "https://github.com/rosyurch/auth-team#readme",
+    "dependencies": {
+        "express": "^4.17.1"
+    },
+    "devDependencies": {
+        "nodemon": "^1.19.2"
+    }
+>>>>>>> 1f59563ae7243b886ea7e03f0a61d1452bf8485e
 }

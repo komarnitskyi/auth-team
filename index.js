@@ -4,7 +4,7 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const fs = require('fs');
-const port = 8000;
+const port = 6969;
 const urlencodedParser = bodyParser.urlencoded({
    extended: false
 });
@@ -21,13 +21,10 @@ fs.readFile('./data.json', 'utf8', (error, data) => {
    count = parseData[parseData.length - 1].id;
 });
 
-app.get("/", (req, res) => res.sendFile(path.join(__dirname + "/views/registration.html")));
+app.get("/", (req, res) => res.sendFile(path.join(__dirname + "/index.html")));
 
-app.get("/login", (req, res) => {
-   fs.readFile('./data.json', 'utf8', (error, data) => {
-      if (!req.body) return res.sendStatus(400);
-      return error ? res.sendStatus(404) : res.send(JSON.parse(data));
-   })
+app.get('/login', (req, res) => {
+   res.sendFile(__dirname + '/views/login.html');
 });
 
 app.post("/registration", (req, res) => {
