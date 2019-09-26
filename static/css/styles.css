@@ -77,10 +77,12 @@ input[type='submit'] {
    margin-bottom: 0;
    border: none;
    transition: .4s ease;
+   border-radius: 15px;
 }
 
 input[type='submit']:hover {
    background-color: #fff;
    color: #000;
    transition: .4s ease;
+   /* border-radius: 10px; */
 }

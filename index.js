@@ -27,6 +27,10 @@ app.get('/login', (req, res) => {
    res.sendFile(__dirname + '/views/login.html');
 });
 
+app.get('/registration', (req, res) => {
+   res.sendFile(__dirname + '/views/registration.html');
+});
+
 app.post("/registration", (req, res) => {
    fs.readFile('./data.json', 'utf8', (error, data) => {
       if (!req.body) return res.sendStatus(400);
