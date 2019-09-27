@@ -21,4 +21,4 @@ app.get('/', (req, res) => res.sendFile(path.join(__dirname + '/index.html')));
 app.use('/login', login);
 app.use('/registration', registration);
 
-app.listen(port);
+app.listen(port, () => console.log(`Listening port ${port}`));
