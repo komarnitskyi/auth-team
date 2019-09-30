@@ -125,7 +125,8 @@ input:focus::placeholder {
 }
 
 input[type='text'],
-input[type='password'] {
+input[type='password'],
+input[type='email'] {
    width: 300px;
    font-size: 18px;
 }

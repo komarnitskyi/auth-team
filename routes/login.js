@@ -42,9 +42,10 @@ router.post('/', (req, res) => {
         })
         .then((login) => {
             if (login.length) {
-                res.sendFile(path.join(__dirname + './../views/cabinet.html'));
+                // res.sendFile(path.join(__dirname + './../views/cabinet.html'));
+                res.send('Success');
             } else {
-                res.send('Wrong login or password')
+                res.send('Wrong login or password');
             }
         });
 });
