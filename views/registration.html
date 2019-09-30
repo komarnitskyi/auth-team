@@ -19,19 +19,21 @@
     </header>
     <div class="container">
         <div class="form">
-            <form action="/registration" id='reg-btn' method="POST">
+            <form action="/registration" id="reg-btn" method="POST">
                 <!-- <form> -->
                 <p>Registration</p>
                 <input type="text" name="login" placeholder="Login" />
+                <input type="email" name="email" placeholder="Email" />
                 <input type="text" name="name" placeholder="First name" />
                 <input type="text" name="surname" placeholder="Last name" />
                 <input type="password" name="password" placeholder="Password" />
-                <input type="password" name="repeat-password" placeholder="Repeat password" />
-                <input type="submit" value="registration" />
+                <input type="password" name="repeatPassword" placeholder="Repeat password" />
+                <input type="submit" name="submitRegistration" value="registration" />
             </form>
-            <span id='res'></span>
+            <span id="res"></span>
         </div>
     </div>
+    <script src="../static/scripts/helpers/validation.js"></script>
     <script src="../static/scripts/registration.js"></script>
 </body>
 
