@@ -49,6 +49,8 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
+    console.log('get post req');
+
     if (req.body === null) return res.status(400).end();
     Users.findAll({
             where: {
@@ -63,10 +65,9 @@ router.post('/', (req, res) => {
                     login: req.body.login,
                     password: req.body.password
                 }).then(() => {
-                    res.send('Success registration');
+                    res.status(200).send("Registration success");
                 }).catch(Sequelize.ValidationError, (err) => {
-                    res.send('Validation Error')
-                    console.log(err.message);
+                    res.status(400).send('Validation error');
                 });
             } else {
                 res.send('This login is already use.');

@@ -7,9 +7,21 @@ window.onload = () => {
 
    reg_btn.addEventListener('submit', (event) => {
       event.preventDefault();
+
       console.log(`Form Submitted! Time stamp: ${event.timeStamp}`);
 
-      fetch(`/registration`)
+      fetch(`/registration`, {
+            method: "POST",
+            headers: {
+               'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+               name: event.target.name.value,
+               surname: event.target.surname.value,
+               login: event.target.login.value,
+               password: event.target.password.value
+            })
+         })
          .then((res) => {
             if (res.status !== 200) {
                throw new Error(res.status);
@@ -17,7 +29,7 @@ window.onload = () => {
             return res;
          })
          .then((res) => {
-            span.innerHTML = res;
+            span.innerHTML = "Success!";
             console.log(res);
 
          })
