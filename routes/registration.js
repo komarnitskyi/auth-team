@@ -38,19 +38,11 @@ Users.init({
     modelName: 'users'
 });
 
-getList = (req, res) => {
-    Users.findAll().then(users => {
-        res.send(JSON.stringify(users, null, 4));
-    });
-}
-
 router.get('/', (req, res) => {
     res.sendFile(path.join(__dirname + './../views/registration.html'));
 });
 
 router.post('/', (req, res) => {
-    console.log('get post req');
-
     if (req.body === null) return res.status(400).end();
     Users.findAll({
             where: {
