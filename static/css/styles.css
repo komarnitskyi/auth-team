@@ -148,3 +148,7 @@ input[type='submit']:hover {
    color: yellow;
    transition: .4s ease;
 }
+
+input:disabled {
+   display: none;
+}
