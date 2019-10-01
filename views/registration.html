@@ -1,38 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Registration</title>
-    <link rel="stylesheet" href="../static/css/styles.css" />
-  </head>
 
-  <body>
-    <header>
-      <div class="menu">
-        <a href="/">Home</a>
-        <a href="/login">Login</a>
-        <a href="/registration">Registration</a>
-      </div>
-    </header>
-    <div class="container">
-      <div class="form">
-        <form action="/registration" id="reg-btn" method="POST">
-          <!-- <form> -->
-          <p>Registration</p>
-          <input type="text" name="login" placeholder="Login" required />
-          <input type="email" name="email" placeholder="Email" required />
-          <input type="text" name="name" placeholder="First name" required />
-          <input type="text" name="surname" placeholder="Last name" required />
-          <input type="password" name="password" placeholder="Password" required />
-          <input type="password" name="repeatPassword" placeholder="Repeat password" required />
-          <input type="submit" name="submitRegistration" value="registration" />
-        </form>
-        <span id="res"></span>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Registration</title>
+  <link rel="stylesheet" href="../static/css/styles.css" />
+</head>
+
+<body>
+  <header>
+    <div class="menu">
+      <a href="/">Home</a>
+      <a href="/login">Login</a>
+      <a href="/registration">Registration</a>
     </div>
-    <script src="../static/scripts/helpers/validation.js"></script>
-    <script src="../static/scripts/registration.js"></script>
-  </body>
+  </header>
+  <div class="container">
+    <div class="form">
+      <form action="/registration" id="reg-btn" method="POST">
+        <p>Registration</p>
+        <span name='errorLogin'></span>
+        <input type="text" name="login" placeholder="Login" required />
+        <span name='errorEmail'></span>
+        <input type="email" name="email" placeholder="Email" required />
+        <span name='errorName'></span>
+        <input type="text" name="name" placeholder="First name" required />
+        <span name='errorSurname'></span>
+        <input type="text" name="surname" placeholder="Last name" required />
+        <span name='errorPassword'></span>
+        <input type="password" name="password" placeholder="Password" required />
+        <span name='errorRepeatPassword'></span>
+        <input type="password" name="repeatPassword" placeholder="Repeat password" required />
+        <input type="submit" name="submitRegistration" value="registration" />
+      </form>
+      <span id="res"></span>
+    </div>
+  </div>
+  <script src="../static/scripts/helpers/validation.js"></script>
+  <script src="../static/scripts/registration.js"></script>
+</body>
+
 </html>
