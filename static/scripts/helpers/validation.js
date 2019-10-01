@@ -1,8 +1,8 @@
 let validityObj = {
-  name: false,
-  surname: false,
-  login: false,
-  email: false,
+  name: true,
+  surname: true,
+  login: true,
+  email: true,
   password: false,
   repeatPassword: false
 };
@@ -10,7 +10,7 @@ let validityObj = {
 checkPassword = event => {
   const reg = /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9])(?!\S*?[\(\)\{\}\/\\\[\],. а-яА-Я]).{6,})\S$/;
   disabledBtn(event.target, reg);
-  checkRepeatPassword(event.target.parentElement.repeatPassword);
+  event.target.parentElement.repeatPassword.value && checkRepeatPassword(event.target.parentElement.repeatPassword);
 };
 checkRepeatPassword = target => {
   const reg = /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9])(?!\S*?[\(\)\{\}\/\\\[\],. а-яА-Я]).{6,})\S$/;

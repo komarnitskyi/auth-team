@@ -1,3 +1,5 @@
+import displayError from "./helpers/displayError";
+
 window.onload = () => {
   const span = document.querySelector("#res");
   const reg_btn = document.querySelector("#reg-btn");
@@ -15,21 +17,19 @@ window.onload = () => {
       email: event.target.email.value
     };
     fetch(`/registration`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json;charset=utf-8"
-        },
-        body: JSON.stringify(formBody)
-      })
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8"
+      },
+      body: JSON.stringify(formBody)
+    })
       .then(res => {
-        if (res.status !== 200) {
-          throw new Error(res.status);
+        if (res.status == 200) {
+          span.innerHTML = "Success!";
+        } else {
+          displayError(res.json());
         }
-        return res;
       })
-      .then(res => {
-        span.innerHTML = "Success!";
-      })
-      .catch(error => console.error("Error:", error));
+      .catch(error => console.error(error));
   });
 };
