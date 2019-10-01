@@ -150,5 +150,15 @@ input[type='submit']:hover {
 }
 
 input:disabled {
-   display: none;
+   background-color: #8f8c8c;
+   color: #000;
+}
+
+input:disabled:hover {
+   color: #000;
+   cursor: default;
+}
+
+.validation-error {
+   border: 1px solid red;
 }

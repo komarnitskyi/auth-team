@@ -10,18 +10,16 @@ checkRepeatPassword = event => {
     event.target.parentElement.submitRegistration.removeAttribute("disabled");
   }
 };
-checkName = event => {
+checkNames = event => {
   const reg = /^[a-zA-Z0-9]{1,}$/;
   disabledBtn(event, reg)
 };
-checkSurname = event => {
-  const reg = /^[a-zA-Z0-9]{1,}$/;
-  disabledBtn(event, reg)
-};
+
 checkLogin = event => {
   const reg = /^([a-zA-z])(?!\S*?[\(\)\{\}\/\\\[\],. а-яА-Я]).{5,}$/;
   disabledBtn(event, reg)
 };
+
 checkEmail = event => {
   const reg = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
   disabledBtn(event, reg)
@@ -36,8 +34,8 @@ disabledBtn = (event, reg) => {
 }
 
 validity = form => {
-  form.name.addEventListener("blur", checkName);
-  form.surname.addEventListener("blur", checkSurname);
+  form.name.addEventListener("blur", checkNames);
+  form.surname.addEventListener("blur", checkNames);
   form.login.addEventListener("blur", checkLogin);
   form.password.addEventListener("blur", checkPassword);
   form.repeatPassword.addEventListener("blur", checkRepeatPassword);
