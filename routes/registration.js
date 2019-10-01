@@ -14,36 +14,47 @@ const sequelize = new Sequelize("JquNDev7GA", "JquNDev7GA", "vYpSRLmr34", {
 
 const Model = Sequelize.Model;
 class Users extends Model {}
-Users.init(
-  {
-    name: {
-      type: Sequelize.STRING,
-      allowNull: false
-    },
-    surname: {
-      type: Sequelize.STRING,
-      allowNull: false
-    },
-    login: {
-      type: Sequelize.STRING
-    },
-    password: {
-      type: Sequelize.STRING,
-      allowNull: false,
-      validate: {
-        len: [8, 255]
-      }
-    },
-    email: {
-      type: Sequelize.STRING,
-      allowNull: false
+Users.init({
+  name: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      is: /^[a-zA-Z0-9]{1,}$/,
     }
   },
-  {
-    sequelize,
-    modelName: "users"
+  surname: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      is: /^[a-zA-Z0-9]{1,}$/,
+    }
+  },
+  login: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      is: /^([a-zA-z])(?!\S*?[\(\)\{\}\/\\\[\],. а-яА-Я]).{5,}$/,
+    }
+
+  },
+  password: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      is: /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9])(?!\S*?[\(\)\{\}\/\\\[\],. а-яА-Я]).{6,})\S$/
+    }
+  },
+  email: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      isEmail: true
+    }
   }
-);
+}, {
+  sequelize,
+  modelName: "users"
+});
 
 router.get("/", (req, res) => {
   res.sendFile(path.join(__dirname + "./../views/registration.html"));
@@ -58,16 +69,18 @@ router.post("/", (req, res) => {
   }).then(login => {
     if (!login.length) {
       Users.create({
-        name: req.body.name,
-        surname: req.body.surname,
-        login: req.body.login,
-        password: req.body.password,
-        email: req.body.email
-      })
+          name: req.body.name,
+          surname: req.body.surname,
+          login: req.body.login,
+          password: req.body.password,
+          email: req.body.email
+        })
         .then(() => {
           res.status(200).send("Registration success");
         })
         .catch(Sequelize.ValidationError, err => {
+          console.log('Validation Error');
+
           res.status(400).send("Validation error");
         });
     } else {
