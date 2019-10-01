@@ -1,4 +1,5 @@
-import displayError from "./helpers/displayError";
+// import { displayError } from "./helpers/displayError";
+// import { validity } from "./helpers/validation";
 
 window.onload = () => {
   const span = document.querySelector("#res");
@@ -25,11 +26,12 @@ window.onload = () => {
     })
       .then(res => {
         if (res.status == 200) {
-          span.innerHTML = "Success!";
+          return { path: "success", message: "Success!" };
         } else {
-          displayError(res.json());
+          return res.json();
         }
       })
+      .then(res => displayError(res))
       .catch(error => console.error(error));
   });
 };

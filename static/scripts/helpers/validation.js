@@ -64,3 +64,5 @@ validity = form => {
   form.repeatPassword.addEventListener("blur", event => checkRepeatPassword(event.target));
   form.email.addEventListener("blur", checkEmail);
 };
+
+//export default validity;

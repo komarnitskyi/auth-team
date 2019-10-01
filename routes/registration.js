@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 const router = express.Router();
 const sequelize = new Sequelize("JquNDev7GA", "JquNDev7GA", "vYpSRLmr34", {
   host: "remotemysql.com",
@@ -71,19 +72,41 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-  if (req.body === null) return res.status(400).end();
-  Users.create({
+  const regReqObj = {
     name: req.body.name,
     surname: req.body.surname,
     login: req.body.login,
     password: req.body.password,
     email: req.body.email
+  };
+  if (req.body === null) return res.status(400).end();
+  Users.findAll({
+    where: {
+      [Op.or]: [{ login: regReqObj.login }, { email: regReqObj.email }]
+    }
   })
-    .then(() => {
-      res.status(200).send("Registration success");
+    .then(arr => {
+      const errArr = [];
+      if (arr.length) {
+        arr.map(el => {
+          if (el.dataValues.login === regReqObj.login) errArr.push({ path: "login", message: "Login already used!" });
+          if (el.dataValues.email === regReqObj.email) errArr.push({ path: "email", message: "Email address already in use!" });
+        });
+      }
+      return errArr;
     })
-    .catch(Sequelize.ValidationError, err => {
-      res.status(400).send(JSON.stringify({ path: err.errors[0].path, type: err.errors[0].type }));
+    .then(arr => {
+      if (arr.length) {
+        res.status(400).send(JSON.stringify(arr));
+      } else {
+        Users.create(regReqObj)
+          .then(() => {
+            res.status(200).send("Registration success");
+          })
+          .catch(Sequelize.ValidationError, err => {
+            res.status(400).send(JSON.stringify({ path: err.errors[0].path, message: err.errors[0].message }));
+          });
+      }
     });
 });
 
