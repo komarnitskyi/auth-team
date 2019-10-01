@@ -17,12 +17,12 @@ window.onload = () => {
       email: event.target.email.value
     };
     fetch(`/registration`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json;charset=utf-8"
-      },
-      body: JSON.stringify(formBody)
-    })
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8"
+        },
+        body: JSON.stringify(formBody)
+      })
       .then(res => {
         if (res.status == 200) {
           span.innerHTML = "Success!";
