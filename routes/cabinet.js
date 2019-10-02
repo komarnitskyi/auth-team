@@ -16,6 +16,14 @@ const Model = Sequelize.Model;
 class Users extends Model {}
 Users.init(
   {
+    name: {
+      type: Sequelize.STRING,
+      allowNull: true
+    },
+    surname: {
+      type: Sequelize.STRING,
+      allowNull: true
+    },
     login: {
       type: Sequelize.STRING,
       allowNull: false,
@@ -23,12 +31,9 @@ Users.init(
         is: /^([a-zA-z])(?!\S*?[\(\)\{\}\/\\\[\],. а-яА-Я]).{5,}$/
       }
     },
-    password: {
+    email: {
       type: Sequelize.STRING,
-      allowNull: false,
-      validate: {
-        is: /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9])(?!\S*?[\(\)\{\}\/\\\[\],. а-яА-Я]).{6,})\S$/
-      }
+      allowNull: true
     }
   },
   {
@@ -38,21 +43,18 @@ Users.init(
 );
 
 router.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname + "./../views/login.html"));
+  res.sendFile(path.join(__dirname + "./../views/cabinet.html"));
 });
 
 router.post("/", (req, res) => {
-  if (req.body === null) return res.status(400).end();
+  //if (req.body === null) return res.status(400).end();
   Users.findAll({
     where: {
-      login: req.body.login,
-      password: req.body.password
+      id: req.session.userId
     }
   }).then(user => {
     if (user.length) {
-      req.session.userId = user[0].id;
-      //return res.redirect('/cabinet');
-      res.send("Success");
+      res.send(JSON.stringify(user[0]));
     } else {
       res.status(422).send("Wrong login or password");
     }
