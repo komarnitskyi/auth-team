@@ -1,0 +1,8 @@
+header .cabinet {
+   display: inline-block;
+}
+
+header .login,
+.registration {
+   display: none;
+}

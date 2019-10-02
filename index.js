@@ -27,7 +27,7 @@ app.use(
     cookie: {
       maxAge: SESS_LIFETIME,
       sameSite: true,
-      secure: true
+      secure: false
     }
   })
 );
@@ -36,13 +36,10 @@ const redirectLogin = (req, res, next) => {
   if (!req.session.userId) {
     res.redirect("/login");
   } else {
-    (req, res) => res.sendFile(path.join(__dirname + "/views/cabinet.html"));
     next();
-    (req, res) => res.sendFile(path.join(__dirname + "/views/cabinet.html"));
   }
-  (req, res) => res.sendFile(path.join(__dirname + "/views/cabinet.html"));
 };
-(req, res) => res.sendFile(path.join(__dirname + "/views/cabinet.html"));
+
 const redirectCabinet = (req, res, next) => {
   if (req.session.userId) {
     res.redirect("/cabinet");
@@ -50,13 +47,6 @@ const redirectCabinet = (req, res, next) => {
     next();
   }
 };
-
-// app.use((req, res, next) =>{
-//   const { userId } = req.session
-//   if(userId){
-//     res.locals.user =
-//   }
-// });
 
 app.use(bodyParser.json());
 app.use(
@@ -71,7 +61,7 @@ app.get("/success", (req, res) => res.sendFile(path.join(__dirname + "/views/suc
 
 app.use("/registration", redirectCabinet, registration);
 app.use("/login", redirectCabinet, login);
-app.get("/cabinet", redirectLogin, cabinet);
-// app.use("/logout", redirectLogin, logout);
+app.use("/cabinet", redirectLogin, cabinet);
+app.use("/logout", redirectLogin, logout);
 
 app.listen(PORT, () => console.log(`Listening port ${PORT}`));

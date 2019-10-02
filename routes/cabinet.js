@@ -47,7 +47,7 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-  if (req.body === null) return res.status(400).end();
+  //if (req.body === null) return res.status(400).end();
   Users.findAll({
     where: {
       id: req.session.userId
