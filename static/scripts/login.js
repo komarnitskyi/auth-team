@@ -19,7 +19,8 @@ window.onload = () => {
         if (res.status !== 200) {
           throw new Error(res.status);
         }
-        return res.text();
+        window.location = '/cabinet';
+        // return res;
       })
       .then((res) => {
         auth_error.innerHTML = res;

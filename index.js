@@ -18,6 +18,7 @@ app.use('/static', express.static(path.join(__dirname, 'static')));
 
 app.get('/', (req, res) => res.sendFile(path.join(__dirname + '/index.html')));
 app.get('/success', (req, res) => res.sendFile(path.join(__dirname + '/views/success.html')));
+app.get('/cabinet', (req, res) => res.sendFile(path.join(__dirname + '/views/cabinet.html')));
 
 app.use('/login', login);
 app.use('/registration', registration);
