@@ -1,3 +1,7 @@
+.container {
+   display: block;
+}
+
 header .cabinet {
    display: inline-block;
 }
