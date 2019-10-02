@@ -24,15 +24,15 @@ window.onload = () => {
       .then(res => {
         if (res.status == 200) {
           window.location = '/success';
-          // return {
+          // return [{
           //   path: "success",
           //   message: "Success!"
-          // };
+          // }];
         } else {
           return res.json();
         }
       })
-      .then(res => displayError(res))
+      .then(obj => displayError(obj))
       .catch(error => console.error(error));
   });
 };

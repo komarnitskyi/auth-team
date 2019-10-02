@@ -100,6 +100,10 @@ router.post("/", (req, res) => {
           });
         });
       }
+      if (regReqObj.password !== req.body.repeatPassword) errArr.push({
+        path: "repeatPassword",
+        message: "Passwords don't match!"
+      });
       return errArr;
     })
     .then(arr => {
@@ -111,10 +115,10 @@ router.post("/", (req, res) => {
             res.status(200).send("Registration success");
           })
           .catch(Sequelize.ValidationError, err => {
-            res.status(400).send(JSON.stringify({
+            res.status(400).send(JSON.stringify([{
               path: err.errors[0].path,
               message: err.errors[0].message
-            }));
+            }]));
           });
       }
     });
