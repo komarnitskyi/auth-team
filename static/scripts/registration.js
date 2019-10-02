@@ -1,5 +1,3 @@
-import displayError from "./helpers/displayError";
-
 window.onload = () => {
   const span = document.querySelector("#res");
   const reg_btn = document.querySelector("#reg-btn");
@@ -25,11 +23,16 @@ window.onload = () => {
       })
       .then(res => {
         if (res.status == 200) {
-          span.innerHTML = "Success!";
+          window.location = '/success';
+          // return {
+          //   path: "success",
+          //   message: "Success!"
+          // };
         } else {
-          displayError(res.json());
+          return res.json();
         }
       })
+      .then(res => displayError(res))
       .catch(error => console.error(error));
   });
 };
