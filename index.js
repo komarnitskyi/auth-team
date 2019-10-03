@@ -16,6 +16,7 @@ const {
     SESS_LIFETIME = LIFE_TIME
 } = process.env;
 
+
 app.use(
   session({
     name: SESS_NAME,
@@ -55,7 +56,6 @@ app.use(
 app.use("/static", express.static(path.join(__dirname, "static")));
 
 app.get("/", (req, res) => {
-  console.log(req.session.userId);
   res.sendFile(path.join(__dirname + "/index.html"))
 });
 app.get("/success", (req, res) => res.sendFile(path.join(__dirname + "/views/success.html")));
