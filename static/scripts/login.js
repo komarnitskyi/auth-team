@@ -1,30 +1,30 @@
 window.onload = () => {
-  const auth_btn = document.querySelector('#auth');
-  const auth_error = document.querySelector('#res_auth');
+  const auth_btn = document.querySelector("#auth");
+  const auth_error = document.querySelector("#res_auth");
 
-  auth_btn.addEventListener('submit', (event) => {
+  auth_btn.addEventListener("submit", event => {
     event.preventDefault();
 
     fetch(`/login`, {
         method: "POST",
         headers: {
-          'Content-Type': 'application/json;charset=utf-8'
+          "Content-Type": "application/json;charset=utf-8"
         },
         body: JSON.stringify({
           login: event.target.login.value,
           password: event.target.password.value
         })
       })
-      .then((res) => {
-        if (res.status !== 200) {
-          throw new Error(res.status);
+      .then(res => {
+        if (res.status === 200) {
+          window.location = "/cabinet";
+          return null;
         }
-        window.location = '/cabinet';
-        // return res;
+        return res.text();
+        // throw new Error(res.status);
+      }).then(res => {
+        auth_error.innerText = res;
       })
-      .then((res) => {
-        auth_error.innerHTML = res;
-      })
-      .catch((error) => console.error("Error:", error));
-  })
+      .catch(error => console.error("Error:", error));
+  });
 };

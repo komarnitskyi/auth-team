@@ -1,11 +1,14 @@
 window.onload = () => {
-  const span = document.querySelector("#res");
   const reg_btn = document.querySelector("#reg-btn");
 
-  validity(reg_btn);
 
   reg_btn.addEventListener("submit", event => {
     event.preventDefault();
+    const spansEl = document.querySelectorAll(`.spanMsg`);
+    for (let index = 0; index < spansEl.length; index++) {
+      spansEl[index].style.display = "none";
+    }
+    if (!validity(reg_btn)) return 0;
     const formBody = {
       name: event.target.name.value,
       surname: event.target.surname.value,
@@ -23,7 +26,7 @@ window.onload = () => {
       })
       .then(res => {
         if (res.status == 200) {
-          window.location = '/success';
+          window.location = "/success";
           // return [{
           //   path: "success",
           //   message: "Success!"

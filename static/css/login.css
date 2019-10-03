@@ -59,7 +59,7 @@ input[type="submit"] {
    text-transform: uppercase;
    letter-spacing: 5px;
    cursor: pointer;
-   margin-bottom: 0;
+   margin-bottom: 10px;
    border: none;
    transition: 0.4s ease;
    border-radius: 15px;
@@ -68,4 +68,10 @@ input[type="submit"] {
 input[type="submit"]:hover {
    color: yellow;
    transition: 0.4s ease;
+}
+
+#res_auth {
+   color: red;
+   font-size: 20px;
+   margin-bottom: 20px;
 }
