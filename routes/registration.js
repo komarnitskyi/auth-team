@@ -1,5 +1,4 @@
 const express = require("express");
-const app = express();
 const path = require("path");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;

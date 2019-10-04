@@ -4,7 +4,7 @@ window.onload = () => {
 
   auth_btn.addEventListener("submit", event => {
     event.preventDefault();
-
+    let status;
     fetch(`/login`, {
         method: "POST",
         headers: {
@@ -16,14 +16,14 @@ window.onload = () => {
         })
       })
       .then(res => {
-        if (res.status === 200) {
-          window.location = "/cabinet";
-          return null;
-        }
+        status = res.status;
         return res.text();
-        // throw new Error(res.status);
       }).then(res => {
-        auth_error.innerText = res;
+        if (status === 200) {
+          window.location = `/cabinet/?token=${res}`;
+        } else {
+          auth_error.innerText = res;
+        }
       })
       .catch(error => console.error("Error:", error));
   });

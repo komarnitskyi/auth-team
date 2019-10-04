@@ -1,10 +1,14 @@
 window.onload = () => {
   const dataConteiner = document.querySelector("#data");
+  const auth_header = document.location.search.slice(document.location.search.indexOf('%22') + 3, -3);
+
+
 
   fetch(`/cabinet`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json;charset=utf-8"
+        "Content-Type": "application/json;charset=utf-8",
+        'auth-token': `${auth_header}`
       }
     })
     .then(res => {
@@ -23,7 +27,7 @@ window.onload = () => {
       </ul>
       </>
       `;
-      JSON.stringify(user);
+      // JSON.stringify(user);
     })
     .catch(err => {
       console.log(err);

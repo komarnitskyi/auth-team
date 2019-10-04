@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const Sequelize = require("sequelize");
+const jwt = require('jsonwebtoken');
 const router = express.Router();
 
 const sequelize = new Sequelize("JquNDev7GA", "JquNDev7GA", "vYpSRLmr34", {
@@ -44,18 +45,24 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-  //if (req.body === null) return res.status(400).end();
-  Users.findAll({
-    where: {
-      id: req.session.userId
-    }
-  }).then(user => {
-    if (user.length) {
-      res.send(JSON.stringify(user[0]));
-    } else {
-      res.status(422).send("Wrong login or password");
-    }
+  const token = req.headers['auth-token'];
+  // console.log(req.headers['auth-token']);
+
+  jwt.verify(token, 'secret', function (err, decoded) {
+    if (err || !decoded.id) return res.status(422).send("Wrong login or password");
+    Users.findAll({
+      where: {
+        id: decoded.id
+      }
+    }).then(user => {
+      if (user.length) {
+        res.send(JSON.stringify(user[0]));
+      } else {
+        res.status(422).send("Wrong login or password");
+      }
+    });
   });
+  //if (req.body === null) return res.status(400).end();
 });
 
 module.exports = router;

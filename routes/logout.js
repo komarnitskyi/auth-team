@@ -1,5 +1,4 @@
 const express = require("express");
-const path = require("path");
 const Sequelize = require("sequelize");
 const router = express.Router();
 
@@ -14,13 +13,10 @@ const sequelize = new Sequelize("JquNDev7GA", "JquNDev7GA", "vYpSRLmr34", {
 
 const Model = Sequelize.Model;
 class Users extends Model {}
-Users.init(
-  {},
-  {
-    sequelize,
-    modelName: "users"
-  }
-);
+Users.init({}, {
+  sequelize,
+  modelName: "users"
+});
 
 const SESS_NAME = "sid";
 

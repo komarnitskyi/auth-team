@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const Sequelize = require("sequelize");
+const jwt = require('jsonwebtoken');
 const router = express.Router();
 
 const sequelize = new Sequelize("JquNDev7GA", "JquNDev7GA", "vYpSRLmr34", {
@@ -47,8 +48,15 @@ router.post("/", (req, res) => {
     }
   }).then(user => {
     if (user.length) {
-      req.session.userId = user[0].id;
-      res.send("Success");
+      const header = {
+        "algorithm": "HS256",
+        // "typ": "JWT"
+      }
+
+      const token = jwt.sign({
+        id: user[0].dataValues.id
+      }, 'secret', header)
+      res.header('auth-token', token).send(JSON.stringify(token));
     } else {
       res.status(422).send("Wrong login or password");
     }
