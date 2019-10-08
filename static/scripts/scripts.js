@@ -1,7 +1,7 @@
 window.onload = () => {
   const headerHref = document.querySelectorAll(".menu a");
-  if (document.location.hash) {
-    headerHref[0].href += "#in";
+  if (window.localStorage.getItem('jwtToken')) {
+    addExitClickEvent();
     headerHref[2].style.display = "none";
     headerHref[3].style.display = "none";
   } else {

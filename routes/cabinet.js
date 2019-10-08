@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const Sequelize = require("sequelize");
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
 const router = express.Router();
 
 const sequelize = new Sequelize("JquNDev7GA", "JquNDev7GA", "vYpSRLmr34", {
@@ -45,11 +46,16 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-  const token = req.headers['auth-token'];
-  // console.log(req.headers['auth-token']);
+  const publicKey = fs.readFileSync('./public.pem');
+  const token = JSON.parse(req.body.token);
 
-  jwt.verify(token, 'secret', function (err, decoded) {
+  jwt.verify(token, publicKey, {
+    algorithms: ["RS256"]
+  }, (err, decoded) => {
     if (err || !decoded.id) return res.status(422).send("Wrong login or password");
+    if (Math.floor(Date.now() / 1000) > decoded.iat) {
+      return res.status(419).send("Token lifecycling end");
+    }
     Users.findAll({
       where: {
         id: decoded.id

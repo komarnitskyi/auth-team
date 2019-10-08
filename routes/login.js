@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const Sequelize = require("sequelize");
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
 const router = express.Router();
 
 const sequelize = new Sequelize("JquNDev7GA", "JquNDev7GA", "vYpSRLmr34", {
@@ -49,14 +50,14 @@ router.post("/", (req, res) => {
   }).then(user => {
     if (user.length) {
       const header = {
-        "algorithm": "HS256",
-        // "typ": "JWT"
+        algorithm: "RS256"
       }
-
+      const privateKey = fs.readFileSync('./private.pem');
       const token = jwt.sign({
-        id: user[0].dataValues.id
-      }, 'secret', header)
-      res.header('auth-token', token).send(JSON.stringify(token));
+        id: user[0].dataValues.id,
+        iat: Math.floor(Date.now() / 1000) + 30
+      }, privateKey, header)
+      res.send(JSON.stringify(token));
     } else {
       res.status(422).send("Wrong login or password");
     }

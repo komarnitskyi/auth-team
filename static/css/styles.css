@@ -39,9 +39,9 @@ header a:hover {
   justify-content: center;
   align-items: center;
   max-width: 1200px;
-  height: calc(100vh - 60px);
+  min-height: calc(100vh - 60px);
   width: 100%;
-  margin: 0 auto;
+  margin: auto;
 }
 
 .container h1 {

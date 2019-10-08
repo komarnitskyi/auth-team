@@ -20,7 +20,9 @@ window.onload = () => {
         return res.text();
       }).then(res => {
         if (status === 200) {
-          window.location = `/cabinet/?token=${res}`;
+          // window.location = `/cabinet/?token=${res}`;
+          window.localStorage.setItem('jwtToken', res);
+          window.location = `/cabinet`;
         } else {
           auth_error.innerText = res;
         }
