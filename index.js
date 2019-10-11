@@ -6,9 +6,27 @@ const registration = require("./routes/registration");
 const cabinet = require("./routes/cabinet");
 const cors = require("cors");
 const users = require("./routes/users");
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 
 const app = express();
 const port = 6969;
+
+app.use(passport.initialize());
+
+const jwtStrategy = new LocalStrategy('sdfsd', (payload, done) =>
+  UserModel.findOne({
+    where: {
+      id: payload.userId
+    }
+  })
+  .then((user = null) => {
+    done(null, user);
+  })
+  .catch((error) => {
+    done(error, null);
+  })
+);
 
 app.use(
   cors({

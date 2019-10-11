@@ -13,58 +13,61 @@ const sequelize = new Sequelize("JquNDev7GA", "JquNDev7GA", "vYpSRLmr34", {
 
 const Model = Sequelize.Model;
 class Users extends Model {}
-Users.init(
-  {
-    id: {
-      type: Sequelize.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-      allowNull: false
-    },
-    name: {
-      type: Sequelize.STRING,
-      allowNull: true
-    },
-    surname: {
-      type: Sequelize.STRING,
-      allowNull: true
-    },
-    login: {
-      type: Sequelize.STRING,
-      allowNull: false,
-      validate: {
-        is: /^([a-zA-z])(?!\S*?[\(\)\{\}\/\\\[\],. а-яА-Я]).{5,}$/
-      }
-    },
-    email: {
-      type: Sequelize.STRING,
-      allowNull: true
+Users.init({
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+    allowNull: false
+  },
+  name: {
+    type: Sequelize.STRING,
+    allowNull: true
+  },
+  surname: {
+    type: Sequelize.STRING,
+    allowNull: true
+  },
+  login: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      is: /^([a-zA-z])(?!\S*?[\(\)\{\}\/\\\[\],. а-яА-Я]).{5,}$/
     }
   },
-  {
-    sequelize,
-    modelName: "users"
-  }
-);
+  email: {
+    type: Sequelize.STRING,
+    allowNull: true
+  },
+  levelId: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: "levels",
+      key: "level"
+    }
+  },
+}, {
+  sequelize,
+  modelName: "users"
+});
+
 class Levels extends Model {}
-Levels.init(
-  {
-    id: {
-      type: Sequelize.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-      allowNull: false
-    },
-    level: {
-      type: Sequelize.STRING,
-      allowNull: true
-    }
+Levels.init({
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+    allowNull: false
   },
-  {
-    sequelize,
-    modelName: "levels"
+  level: {
+    type: Sequelize.STRING,
+    allowNull: true
   }
-);
+}, {
+  sequelize,
+  modelName: "levels"
+});
+
 Levels.hasMany(Users);
 
 router.get("/", (req, res) => {

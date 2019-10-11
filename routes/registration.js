@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const Sequelize = require("sequelize");
+const bcrypt = require('bcryptjs');
 const Op = Sequelize.Op;
 const router = express.Router();
 const sequelize = new Sequelize("JquNDev7GA", "JquNDev7GA", "vYpSRLmr34", {
@@ -14,83 +15,84 @@ const sequelize = new Sequelize("JquNDev7GA", "JquNDev7GA", "vYpSRLmr34", {
 
 const Model = Sequelize.Model;
 class Users extends Model {}
-Users.init(
-  {
-    name: {
-      type: Sequelize.STRING,
-      allowNull: false,
-      validate: {
-        is: /^[a-zA-Z0-9]{1,}$/
-      }
-    },
-    surname: {
-      type: Sequelize.STRING,
-      allowNull: false,
-      validate: {
-        is: /^[a-zA-Z0-9]{1,}$/
-      }
-    },
-    login: {
-      type: Sequelize.STRING,
-      allowNull: false,
-      validate: {
-        is: /^([a-zA-z])(?!\S*?[\(\)\{\}\/\\\[\],. а-яА-Я]).{5,}$/
-      },
-      unique: {
-        args: true,
-        msg: "Login already used!"
-      }
-    },
-    password: {
-      type: Sequelize.STRING,
-      allowNull: false,
-      validate: {
-        is: /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9])(?!\S*?[\(\)\{\}\/\\\[\],. а-яА-Я]).{6,})\S$/
-      }
-    },
-    email: {
-      type: Sequelize.STRING,
-      allowNull: false,
-      validate: {
-        isEmail: true
-      },
-      unique: {
-        args: true,
-        msg: "Email address already in use!"
-      }
+Users.init({
+  name: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      is: /^[a-zA-Z0-9]{1,}$/
     }
   },
-  {
-    sequelize,
-    modelName: "users"
+  surname: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      is: /^[a-zA-Z0-9]{1,}$/
+    }
+  },
+  login: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      is: /^([a-zA-z])(?!\S*?[\(\)\{\}\/\\\[\],. а-яА-Я]).{5,}$/
+    },
+    unique: {
+      args: true,
+      msg: "Login already used!"
+    }
+  },
+  password: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  email: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      isEmail: true
+    },
+    unique: {
+      args: true,
+      msg: "Email address already in use!"
+    }
   }
-);
+}, {
+  sequelize,
+  modelName: "users"
+});
 
 router.get("/", (req, res) => {
   res.sendFile(path.join(__dirname + "./../views/registration.html"));
 });
 
 router.post("/", (req, res) => {
+  const salt = bcrypt.genSaltSync(10);
+  const passwordToSave = bcrypt.hashSync(req.body.password, salt);
+  const repeatPasswordToSave = bcrypt.hashSync(req.body.repeatPassword, salt);
+
+  bcrypt.genSalt(10, function (err, salt) {
+    bcrypt.hash("B4c0/\/", salt, function (err, hash) {});
+  });
+
   const regReqObj = {
     name: req.body.name,
     surname: req.body.surname,
     login: req.body.login,
-    password: req.body.password,
+    password: passwordToSave,
     email: req.body.email
   };
   if (req.body === null) return res.status(400).end();
   Users.findAll({
-    where: {
-      [Op.or]: [
-        {
-          login: regReqObj.login
-        },
-        {
-          email: regReqObj.email
-        }
-      ]
-    }
-  })
+      where: {
+        [Op.or]: [{
+            login: regReqObj.login
+          },
+          {
+            email: regReqObj.email
+          }
+        ]
+      }
+    })
     .then(arr => {
       const errArr = [];
       if (arr.length) {
@@ -107,7 +109,7 @@ router.post("/", (req, res) => {
             });
         });
       }
-      if (regReqObj.password !== req.body.repeatPassword)
+      if (regReqObj.password !== repeatPasswordToSave)
         errArr.push({
           path: "repeatPassword",
           message: "Passwords don't match!"
@@ -124,12 +126,10 @@ router.post("/", (req, res) => {
           })
           .catch(Sequelize.ValidationError, err => {
             res.status(400).send(
-              JSON.stringify([
-                {
-                  path: err.errors[0].path,
-                  message: err.errors[0].message
-                }
-              ])
+              JSON.stringify([{
+                path: err.errors[0].path,
+                message: err.errors[0].message
+              }])
             );
           });
       }
