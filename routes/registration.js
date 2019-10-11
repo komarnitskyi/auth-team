@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const Sequelize = require("sequelize");
 const bcrypt = require('bcryptjs');
+const Users = require('../helpers/sequelizeInit.js').Users;
 const Op = Sequelize.Op;
 const router = express.Router();
 const sequelize = new Sequelize("JquNDev7GA", "JquNDev7GA", "vYpSRLmr34", {
@@ -13,53 +14,7 @@ const sequelize = new Sequelize("JquNDev7GA", "JquNDev7GA", "vYpSRLmr34", {
   }
 });
 
-const Model = Sequelize.Model;
-class Users extends Model {}
-Users.init({
-  name: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      is: /^[a-zA-Z0-9]{1,}$/
-    }
-  },
-  surname: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      is: /^[a-zA-Z0-9]{1,}$/
-    }
-  },
-  login: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      is: /^([a-zA-z])(?!\S*?[\(\)\{\}\/\\\[\],. а-яА-Я]).{5,}$/
-    },
-    unique: {
-      args: true,
-      msg: "Login already used!"
-    }
-  },
-  password: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  email: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      isEmail: true
-    },
-    unique: {
-      args: true,
-      msg: "Email address already in use!"
-    }
-  }
-}, {
-  sequelize,
-  modelName: "users"
-});
+
 
 router.get("/", (req, res) => {
   res.sendFile(path.join(__dirname + "./../views/registration.html"));

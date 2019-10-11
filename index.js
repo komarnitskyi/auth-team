@@ -1,10 +1,13 @@
 const express = require("express");
+const session = require("express-session");
 const path = require("path");
 const bodyParser = require("body-parser");
+const cors = require("cors");
+const passport = require("passport");
+
 const login = require("./routes/login");
 const registration = require("./routes/registration");
 const cabinet = require("./routes/cabinet");
-const cors = require("cors");
 const users = require("./routes/users");
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
@@ -12,21 +15,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const app = express();
 const port = 6969;
 
-app.use(passport.initialize());
-
-const jwtStrategy = new LocalStrategy('sdfsd', (payload, done) =>
-  UserModel.findOne({
-    where: {
-      id: payload.userId
-    }
-  })
-  .then((user = null) => {
-    done(null, user);
-  })
-  .catch((error) => {
-    done(error, null);
-  })
-);
+require("./helpers/passport");
 
 app.use(
   cors({
@@ -41,14 +30,34 @@ app.use(
     extended: false
   })
 );
+app.use(passport.initialize());
+app.use(session({
+  secret: "smile",
+  saveUninitialized: true,
+  resave: true
+}));
+app.use(passport.session());
+passport.deserializeUser((id, done) => {
+  console.log("86 id ", id);
+
+  Users.findOne({
+    where: {
+      id
+    }
+  }).then(user => {
+    done(null, user);
+    return null;
+  });
+});
 
 app.use("/static", express.static(path.join(__dirname, "static")));
+
+app.get("/", (req, res) => res.sendFile(path.join(__dirname + "/index.html")));
+app.get("/success", (req, res) => res.sendFile(path.join(__dirname + "/views/success.html")));
+
 app.use("/registration", registration);
 app.use("/login", login);
 app.use("/cabinet", cabinet);
 app.use("/users", users);
-
-app.get("/", (req, res) => res.sendFile(path.join(__dirname + "/index.html")));
-app.get("/success", (req, res) => res.sendFile(path.join(__dirname + "/views/success.html")));
 
 app.listen(port, () => console.log(`Listening port ${port}`));
