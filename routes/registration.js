@@ -43,10 +43,7 @@ Users.init(
     },
     password: {
       type: Sequelize.STRING,
-      allowNull: false,
-      validate: {
-        is: /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9])(?!\S*?[\(\)\{\}\/\\\[\],. а-яА-Я]).{6,})\S$/
-      }
+      allowNull: false
     },
     email: {
       type: Sequelize.STRING,
