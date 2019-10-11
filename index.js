@@ -9,6 +9,7 @@ const login = require("./routes/login");
 const registration = require("./routes/registration");
 const cabinet = require("./routes/cabinet");
 const users = require("./routes/users");
+const vacation = require("./routes/vacation");
 
 const app = express();
 const port = 6969;
@@ -49,5 +50,6 @@ app.use("/registration", registration);
 app.use("/login", login);
 app.use("/cabinet", cabinet);
 app.use("/users", users);
+app.use("/vacation", vacation);
 
 app.listen(port, () => console.log(`Listening port ${port}`));
