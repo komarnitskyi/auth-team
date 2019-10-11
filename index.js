@@ -6,6 +6,7 @@ const registration = require("./routes/registration");
 const cabinet = require("./routes/cabinet");
 const cors = require("cors");
 const users = require("./routes/users");
+const vacation = require("./routes/vacation");
 
 const app = express();
 const port = 6969;
@@ -29,6 +30,7 @@ app.use("/registration", registration);
 app.use("/login", login);
 app.use("/cabinet", cabinet);
 app.use("/users", users);
+app.use("/vacation", vacation);
 
 app.get("/", (req, res) => res.sendFile(path.join(__dirname + "/index.html")));
 app.get("/success", (req, res) => res.sendFile(path.join(__dirname + "/views/success.html")));
