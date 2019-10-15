@@ -1,4 +1,5 @@
 const Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 
 const sequelize = new Sequelize("JquNDev7GA", "JquNDev7GA", "vYpSRLmr34", {
   host: "remotemysql.com",
@@ -49,7 +50,7 @@ Users.init({
   },
   joinedAt: {
     type: Sequelize.DATE,
-    allowNull: false
+    allowNull: true
   },
   createdAt: {
     type: Sequelize.DATE,
@@ -61,6 +62,7 @@ Users.init({
   sequelize,
   modelName: "users"
 });
+
 class Levels extends Model {}
 Levels.init({
   id: {
@@ -83,14 +85,16 @@ Levels.init({
   sequelize,
   modelName: "levels"
 });
+
 Levels.hasMany(Users);
 
 Users.belongsTo(Levels, {
-  foreignKey: 'levelId'
-})
-
+  foreignKey: "levelId"
+});
 
 module.exports = {
+  Sequelize,
   Users,
-  Levels
+  Levels,
+  Op
 };
