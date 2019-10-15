@@ -1,10 +1,11 @@
 const passport = require("passport");
+const fs = require("fs");
 const LocalStrategy = require("passport-local").Strategy;
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJWT = require("passport-jwt").ExtractJwt;
-const fs = require("fs");
-
 const Users = require("../helpers/sequelizeInit").Users;
+const checkPassword = require("./cryptPassword").checkPassword;
+
 const publicKey = fs.readFileSync("./public.pem");
 
 const jwtStrategy = new JwtStrategy(
@@ -13,9 +14,8 @@ const jwtStrategy = new JwtStrategy(
     secretOrKey: publicKey
   },
   function(jwtPayload, done) {
-    console.log(jwtPayload);
-
-    return Users.findOneById(jwtPayload.id)
+    if (Math.floor(Date.now() / 1000) > jwtPayload.iat) return done(null, false, { message: "Token lifecycling end" });
+    return Users.findByPk(jwtPayload.id)
       .then(user => {
         return done(null, user);
       })
@@ -36,7 +36,7 @@ const localStrategy = new LocalStrategy(
         if (!user) {
           return done(null, false, { message: "Incorrect username." });
         }
-        if (user.password !== password) {
+        if (!checkPassword(user.password, password)) {
           return done(null, false, { message: "Incorrect password." });
         }
         return done(null, user);

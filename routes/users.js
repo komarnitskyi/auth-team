@@ -7,13 +7,13 @@ const router = express.Router();
 router.get("/", (req, res) => {
   Users.findAll({
     raw: true,
-    attributes: ['id', 'name', 'surname', 'login', 'email', 'joinedAt',
-      'level.level'
-    ],
-    include: [{
-      model: Levels,
-      attributes: []
-    }]
+    attributes: ["id", "name", "surname", "login", "email", "joinedAt", "level.level"],
+    include: [
+      {
+        model: Levels,
+        attributes: []
+      }
+    ]
   }).then(user => {
     if (user.length) {
       res.send(JSON.stringify(user));

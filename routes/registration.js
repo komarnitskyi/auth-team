@@ -1,33 +1,26 @@
 const express = require("express");
 const path = require("path");
-const Sequelize = require("sequelize");
-const bcrypt = require('bcryptjs');
-const Users = require('../helpers/sequelizeInit.js').Users;
-const Op = Sequelize.Op;
+const Sequelize = require("../helpers/sequelizeInit.js").Sequelize;
+const Users = require("../helpers/sequelizeInit.js").Users;
+const Op = require("../helpers/sequelizeInit.js").Op;
+const hashPassword = require("../helpers/cryptPassword").hashPassword;
 const router = express.Router();
-const sequelize = new Sequelize("JquNDev7GA", "JquNDev7GA", "vYpSRLmr34", {
-  host: "remotemysql.com",
-  dialect: "mysql",
-  define: {
-    timestamps: false,
-    freezeTableName: true
-  }
-});
-
-
 
 router.get("/", (req, res) => {
   res.sendFile(path.join(__dirname + "./../views/registration.html"));
 });
 
 router.post("/", (req, res) => {
-  const salt = bcrypt.genSaltSync(10);
-  const passwordToSave = bcrypt.hashSync(req.body.password, salt);
-  const repeatPasswordToSave = bcrypt.hashSync(req.body.repeatPassword, salt);
+  const errArr = [];
+  if (req.body.password !== req.body.repeatPassword) {
+    errArr.push({
+      path: "repeatPassword",
+      message: "Passwords don't match!"
+    });
+    return errArr;
+  }
 
-  bcrypt.genSalt(10, function (err, salt) {
-    bcrypt.hash("B4c0/\/", salt, function (err, hash) {});
-  });
+  const passwordToSave = hashPassword(req.body.password);
 
   const regReqObj = {
     name: req.body.name,
@@ -38,18 +31,18 @@ router.post("/", (req, res) => {
   };
   if (req.body === null) return res.status(400).end();
   Users.findAll({
-      where: {
-        [Op.or]: [{
-            login: regReqObj.login
-          },
-          {
-            email: regReqObj.email
-          }
-        ]
-      }
-    })
+    where: {
+      [Op.or]: [
+        {
+          login: regReqObj.login
+        },
+        {
+          email: regReqObj.email
+        }
+      ]
+    }
+  })
     .then(arr => {
-      const errArr = [];
       if (arr.length) {
         arr.map(el => {
           if (el.dataValues.login === regReqObj.login)
@@ -64,11 +57,6 @@ router.post("/", (req, res) => {
             });
         });
       }
-      if (regReqObj.password !== repeatPasswordToSave)
-        errArr.push({
-          path: "repeatPassword",
-          message: "Passwords don't match!"
-        });
       return errArr;
     })
     .then(arr => {
@@ -81,10 +69,12 @@ router.post("/", (req, res) => {
           })
           .catch(Sequelize.ValidationError, err => {
             res.status(400).send(
-              JSON.stringify([{
-                path: err.errors[0].path,
-                message: err.errors[0].message
-              }])
+              JSON.stringify([
+                {
+                  path: err.errors[0].path,
+                  message: err.errors[0].message
+                }
+              ])
             );
           });
       }

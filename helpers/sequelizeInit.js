@@ -1,4 +1,5 @@
 const Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 
 const sequelize = new Sequelize("JquNDev7GA", "JquNDev7GA", "vYpSRLmr34", {
   host: "remotemysql.com",
@@ -11,75 +12,82 @@ const sequelize = new Sequelize("JquNDev7GA", "JquNDev7GA", "vYpSRLmr34", {
 
 const Model = Sequelize.Model;
 class Users extends Model {}
-Users.init({
-  id: {
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-    allowNull: false
-  },
-  name: {
-    type: Sequelize.STRING,
-    allowNull: true
-  },
-  surname: {
-    type: Sequelize.STRING,
-    allowNull: true
-  },
-  login: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      is: /^([a-zA-z])(?!\S*?[\(\)\{\}\/\\\[\],. а-яА-Я]).{5,}$/
-    }
-  },
-  email: {
-    type: Sequelize.STRING,
-    allowNull: true,
-    validate: {
-      isEmail: true
+Users.init(
+  {
+    id: {
+      type: Sequelize.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+      allowNull: false
     },
-    unique: {
-      args: true,
-      msg: "Email address already in use!"
+    name: {
+      type: Sequelize.STRING,
+      allowNull: true
+    },
+    surname: {
+      type: Sequelize.STRING,
+      allowNull: true
+    },
+    login: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      validate: {
+        is: /^([a-zA-z])(?!\S*?[\(\)\{\}\/\\\[\],. а-яА-Я]).{5,}$/
+      }
+    },
+    email: {
+      type: Sequelize.STRING,
+      allowNull: true,
+      validate: {
+        isEmail: true
+      },
+      unique: {
+        args: true,
+        msg: "Email address already in use!"
+      }
+    },
+    password: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    joinedAt: {
+      type: Sequelize.DATE,
+      allowNull: true
     }
   },
-  password: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  joinedAt: {
-    type: Sequelize.DATE,
-    allowNull: true
+  {
+    sequelize,
+    modelName: "users"
   }
-}, {
-  sequelize,
-  modelName: "users"
-});
+);
 class Levels extends Model {}
-Levels.init({
-  id: {
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-    allowNull: false
+Levels.init(
+  {
+    id: {
+      type: Sequelize.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+      allowNull: false
+    },
+    level: {
+      type: Sequelize.STRING,
+      allowNull: true
+    }
   },
-  level: {
-    type: Sequelize.STRING,
-    allowNull: true
+  {
+    sequelize,
+    modelName: "levels"
   }
-}, {
-  sequelize,
-  modelName: "levels"
-});
+);
 Levels.hasMany(Users);
 
 Users.belongsTo(Levels, {
-  foreignKey: 'levelId'
-})
-
+  foreignKey: "levelId"
+});
 
 module.exports = {
+  Sequelize,
   Users,
-  Levels
+  Levels,
+  Op
 };
