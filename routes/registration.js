@@ -1,20 +1,9 @@
 const express = require("express");
 const path = require("path");
-const Sequelize = require("sequelize");
-const bcrypt = require('bcryptjs');
-const Users = require('../helpers/sequelizeInit.js').Users;
-const Op = Sequelize.Op;
+const bcrypt = require("bcryptjs");
+const Users = require("../helpers/sequelizeInit.js").Users;
+const Op = require("../helpers/sequelizeInit.js").Op;
 const router = express.Router();
-const sequelize = new Sequelize("JquNDev7GA", "JquNDev7GA", "vYpSRLmr34", {
-  host: "remotemysql.com",
-  dialect: "mysql",
-  define: {
-    timestamps: false,
-    freezeTableName: true
-  }
-});
-
-
 
 router.get("/", (req, res) => {
   res.sendFile(path.join(__dirname + "./../views/registration.html"));
@@ -25,8 +14,8 @@ router.post("/", (req, res) => {
   const passwordToSave = bcrypt.hashSync(req.body.password, salt);
   const repeatPasswordToSave = bcrypt.hashSync(req.body.repeatPassword, salt);
 
-  bcrypt.genSalt(10, function (err, salt) {
-    bcrypt.hash("B4c0/\/", salt, function (err, hash) {});
+  bcrypt.genSalt(10, function(err, salt) {
+    bcrypt.hash("B4c0//", salt, function(err, hash) {});
   });
 
   const regReqObj = {
@@ -38,16 +27,17 @@ router.post("/", (req, res) => {
   };
   if (req.body === null) return res.status(400).end();
   Users.findAll({
-      where: {
-        [Op.or]: [{
-            login: regReqObj.login
-          },
-          {
-            email: regReqObj.email
-          }
-        ]
-      }
-    })
+    where: {
+      [Op.or]: [
+        {
+          login: regReqObj.login
+        },
+        {
+          email: regReqObj.email
+        }
+      ]
+    }
+  })
     .then(arr => {
       const errArr = [];
       if (arr.length) {
@@ -81,10 +71,12 @@ router.post("/", (req, res) => {
           })
           .catch(Sequelize.ValidationError, err => {
             res.status(400).send(
-              JSON.stringify([{
-                path: err.errors[0].path,
-                message: err.errors[0].message
-              }])
+              JSON.stringify([
+                {
+                  path: err.errors[0].path,
+                  message: err.errors[0].message
+                }
+              ])
             );
           });
       }

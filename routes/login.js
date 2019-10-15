@@ -1,22 +1,17 @@
 const express = require("express");
 const path = require("path");
 const Sequelize = require("sequelize");
-const jwt = require('jsonwebtoken');
-const fs = require('fs');
-const bcrypt = require('bcryptjs');
+const jwt = require("jsonwebtoken");
+const fs = require("fs");
+const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const router = express.Router();
 
+const authenticate = require("../helpers/authenticate").loginAuthenticate;
 
 const privateKey = fs.readFileSync("./private.pem");
 
 require("../helpers/passport");
-
-const authenticate = passport.authenticate("local", {
-  session: true
-});
-
-const router = express.Router();
 
 router.get("/", (req, res) => {
   res.sendFile(path.join(__dirname + "./../views/login.html"));
@@ -53,23 +48,29 @@ router.post("/", authenticate, (req, res) => {
   const header = {
     algorithm: "RS256"
   };
-  const token = jwt.sign({
+  const token = jwt.sign(
+    {
       id: req.user.id,
       iat: Math.floor(Date.now() / 1000) + 30
     },
     privateKey,
     header
   );
-  req.login(req.user, {
-    session: true
-  }, err => {
-    if (err) {
-      res.send(err);
+  req.login(
+    req.user,
+    {
+      session: true
+    },
+    err => {
+      if (err) {
+        res.send(err);
+      }
+      console.log(`User ${req.user.name} login!`);
+      return res.json({
+        token
+      });
     }
-    return res.json({
-      token
-    });
-  });
+  );
 });
 
 module.exports = router;

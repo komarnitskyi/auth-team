@@ -30,24 +30,14 @@ app.use(
   })
 );
 app.use(passport.initialize());
-app.use(session({
-  secret: "smile",
-  saveUninitialized: true,
-  resave: true
-}));
+app.use(
+  session({
+    secret: "smile",
+    saveUninitialized: true,
+    resave: true
+  })
+);
 app.use(passport.session());
-passport.deserializeUser((id, done) => {
-  console.log("86 id ", id);
-
-  Users.findOne({
-    where: {
-      id
-    }
-  }).then(user => {
-    done(null, user);
-    return null;
-  });
-});
 
 app.use("/static", express.static(path.join(__dirname, "static")));
 

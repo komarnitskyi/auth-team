@@ -15,7 +15,7 @@ const jwtStrategy = new JwtStrategy(
   function(jwtPayload, done) {
     console.log(jwtPayload);
 
-    return Users.findOneById(jwtPayload.id)
+    return Users.findByPk(jwtPayload.id)
       .then(user => {
         return done(null, user);
       })

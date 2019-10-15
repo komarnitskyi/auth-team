@@ -6,22 +6,23 @@ window.onload = () => {
     event.preventDefault();
     let status;
     fetch(`/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json;charset=utf-8"
-        },
-        body: JSON.stringify({
-          login: event.target.login.value,
-          password: event.target.password.value
-        })
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8"
+      },
+      body: JSON.stringify({
+        login: event.target.login.value,
+        password: event.target.password.value
       })
+    })
       .then(res => {
         status = res.status;
         return res.text();
-      }).then(res => {
+      })
+      .then(res => {
         if (status === 200) {
           // window.location = `/cabinet/?token=${res}`;
-          window.localStorage.setItem('jwtToken', res);
+          window.localStorage.setItem("jwtToken", res);
           window.location = `/cabinet`;
         } else {
           auth_error.innerText = res;
