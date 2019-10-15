@@ -4,6 +4,7 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const passport = require("passport");
+const jwtAuthenticate = require("./helpers/authenticate").jwtAuthenticate;
 
 const login = require("./routes/login");
 const registration = require("./routes/registration");
@@ -46,8 +47,8 @@ app.get("/success", (req, res) => res.sendFile(path.join(__dirname + "/views/suc
 
 app.use("/registration", registration);
 app.use("/login", login);
-app.use("/cabinet", cabinet);
-app.use("/users", users);
-app.use("/vacation", vacation);
+app.use("/cabinet", jwtAuthenticate, cabinet);
+app.use("/users", jwtAuthenticate, users);
+app.use("/vacation", jwtAuthenticate, vacation);
 
 app.listen(port, () => console.log(`Listening port ${port}`));

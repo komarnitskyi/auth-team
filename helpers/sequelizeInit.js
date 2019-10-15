@@ -5,7 +5,7 @@ const sequelize = new Sequelize("JquNDev7GA", "JquNDev7GA", "vYpSRLmr34", {
   host: "remotemysql.com",
   dialect: "mysql",
   define: {
-    timestamps: false,
+    // timestamps: false,
     freezeTableName: true
   }
 });
@@ -49,6 +49,10 @@ Users.init(
     password: {
       type: Sequelize.STRING,
       allowNull: false
+    },
+    joinedAt: {
+      type: Sequelize.DATE,
+      allowNull: true
     }
   },
   {
@@ -77,7 +81,12 @@ Levels.init(
 );
 Levels.hasMany(Users);
 
+Users.belongsTo(Levels, {
+  foreignKey: "levelId"
+});
+
 module.exports = {
+  Sequelize,
   Users,
   Levels,
   Op

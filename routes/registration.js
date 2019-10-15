@@ -1,8 +1,9 @@
 const express = require("express");
 const path = require("path");
-const bcrypt = require("bcryptjs");
+const Sequelize = require("../helpers/sequelizeInit.js").Sequelize;
 const Users = require("../helpers/sequelizeInit.js").Users;
 const Op = require("../helpers/sequelizeInit.js").Op;
+const hashPassword = require("../helpers/cryptPassword").hashPassword;
 const router = express.Router();
 
 router.get("/", (req, res) => {
@@ -10,13 +11,16 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-  const salt = bcrypt.genSaltSync(10);
-  const passwordToSave = bcrypt.hashSync(req.body.password, salt);
-  const repeatPasswordToSave = bcrypt.hashSync(req.body.repeatPassword, salt);
+  const errArr = [];
+  if (req.body.password !== req.body.repeatPassword) {
+    errArr.push({
+      path: "repeatPassword",
+      message: "Passwords don't match!"
+    });
+    return errArr;
+  }
 
-  bcrypt.genSalt(10, function(err, salt) {
-    bcrypt.hash("B4c0//", salt, function(err, hash) {});
-  });
+  const passwordToSave = hashPassword(req.body.password);
 
   const regReqObj = {
     name: req.body.name,
@@ -39,7 +43,6 @@ router.post("/", (req, res) => {
     }
   })
     .then(arr => {
-      const errArr = [];
       if (arr.length) {
         arr.map(el => {
           if (el.dataValues.login === regReqObj.login)
@@ -54,11 +57,6 @@ router.post("/", (req, res) => {
             });
         });
       }
-      if (regReqObj.password !== repeatPasswordToSave)
-        errArr.push({
-          path: "repeatPassword",
-          message: "Passwords don't match!"
-        });
       return errArr;
     })
     .then(arr => {
