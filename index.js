@@ -37,8 +37,6 @@ app.use(session({
 }));
 app.use(passport.session());
 passport.deserializeUser((id, done) => {
-  console.log("86 id ", id);
-
   Users.findOne({
     where: {
       id

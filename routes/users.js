@@ -23,7 +23,27 @@ router.get("/", (req, res) => {
   });
 });
 router.get("/:id", (req, res) => {
-  Users.findByPk(req.params.id).then(user => {
+  // Users.findByPk(req.params.id).then(user => {
+  //   if (user !== null) {
+  //     res.send(JSON.stringify(user));
+  //   } else {
+  //     res.status(422).send("No users found!");
+  //   }
+  // });
+
+  Users.findOne({
+    raw: true,
+    where: {
+      id: req.params.id
+    },
+    attributes: ['id', 'name', 'surname', 'login', 'email', 'joinedAt',
+      'level.level'
+    ],
+    include: [{
+      model: Levels,
+      attributes: []
+    }]
+  }).then(user => {
     if (user !== null) {
       res.send(JSON.stringify(user));
     } else {

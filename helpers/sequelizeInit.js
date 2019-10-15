@@ -4,7 +4,6 @@ const sequelize = new Sequelize("JquNDev7GA", "JquNDev7GA", "vYpSRLmr34", {
   host: "remotemysql.com",
   dialect: "mysql",
   define: {
-    // timestamps: false,
     freezeTableName: true
   }
 });
@@ -50,7 +49,13 @@ Users.init({
   },
   joinedAt: {
     type: Sequelize.DATE,
-    allowNull: true
+    allowNull: false
+  },
+  createdAt: {
+    type: Sequelize.DATE,
+  },
+  updatedAt: {
+    type: Sequelize.DATE,
   }
 }, {
   sequelize,
@@ -67,6 +72,12 @@ Levels.init({
   level: {
     type: Sequelize.STRING,
     allowNull: true
+  },
+  createdAt: {
+    type: Sequelize.DATE,
+  },
+  updatedAt: {
+    type: Sequelize.DATE,
   }
 }, {
   sequelize,
