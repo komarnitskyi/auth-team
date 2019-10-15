@@ -1,37 +1,6 @@
 const express = require("express");
-const Sequelize = require("sequelize");
 const router = express.Router();
-
-const sequelize = new Sequelize("JquNDev7GA", "JquNDev7GA", "vYpSRLmr34", {
-    host: "remotemysql.com",
-    dialect: "mysql",
-    define: {
-        timestamps: false,
-        freezeTableName: true
-    }
-});
-
-const Model = Sequelize.Model;
-class Users extends Model {
-}
-Users.init(
-    {
-        id: {
-            type: Sequelize.INTEGER,
-            autoIncrement: true,
-            primaryKey: true,
-            allowNull: false
-        },
-        joinedAt: {
-            type: Sequelize.DATE,
-            allowNull: true
-        },
-    },
-    {
-        sequelize,
-        modelName: "users"
-    }
-);
+const Users = require("../helpers/sequelizeInit").Users;
 
 router.get("/:id", (req, res) => {
     Users.findByPk(req.params.id).then(user => {
@@ -47,18 +16,12 @@ router.get("/:id", (req, res) => {
     });
 });
 
-calculateVacation = (base, date, fullYears, joinedAt) => {
-    const diffTime = Math.abs(joinedAt - date);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    const diffYears = diffDays / 365;
-    const yearsAdded = diffYears - fullYears > 0 ? Math.ceil(diffYears) : 0;
+calculateVacation = (base = 10, date, fullYears, joinedAt) => {
     let result = {};
-
-    console.log('difference in ms:', diffTime);
-    console.log('years:',diffYears);
-    console.log('days added:', Math.ceil(diffYears));
-
-    result.final = base + yearsAdded;
+    const diffTime = Math.abs(joinedAt - date);
+    const diffYears = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) / 365;
+    const daysAdded = diffYears - fullYears > 0 ? Math.ceil(diffYears) - fullYears : 0;
+    result.total = base + daysAdded;
     return result;
 };
 
