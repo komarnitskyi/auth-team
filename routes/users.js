@@ -18,7 +18,7 @@ router.get("/", (req, res) => {
     if (user.length) {
       res.send(JSON.stringify(user));
     } else {
-      res.status(422).send("None users are finded.");
+      res.status(422).send("No users found!");
     }
   });
 });
@@ -27,7 +27,7 @@ router.get("/:id", (req, res) => {
     if (user !== null) {
       res.send(JSON.stringify(user));
     } else {
-      res.status(422).send("None users are finded.");
+      res.status(422).send("No users found!");
     }
   });
 });

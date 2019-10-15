@@ -47,6 +47,10 @@ Users.init({
   password: {
     type: Sequelize.STRING,
     allowNull: false
+  },
+  joinedAt: {
+    type: Sequelize.DATE,
+    allowNull: true
   }
 }, {
   sequelize,
