@@ -4,7 +4,7 @@ const sequelize = new Sequelize("JquNDev7GA", "JquNDev7GA", "vYpSRLmr34", {
   host: "remotemysql.com",
   dialect: "mysql",
   define: {
-    timestamps: false,
+    // timestamps: false,
     freezeTableName: true
   }
 });
@@ -69,6 +69,11 @@ Levels.init({
   modelName: "levels"
 });
 Levels.hasMany(Users);
+
+Users.belongsTo(Levels, {
+  foreignKey: 'levelId'
+})
+
 
 module.exports = {
   Users,

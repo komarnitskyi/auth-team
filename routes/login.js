@@ -16,8 +16,6 @@ const authenticate = passport.authenticate("local", {
   session: true
 });
 
-const router = express.Router();
-
 router.get("/", (req, res) => {
   res.sendFile(path.join(__dirname + "./../views/login.html"));
 });
@@ -48,6 +46,10 @@ router.get("/", (req, res) => {
 //       })
 //     } else {
 //       res.status(422).send("Wrong login or password");
+//     }
+//   })
+// })
+
 router.post("/", authenticate, (req, res) => {
   if (req.user === null) return res.status(400).end();
   const header = {
