@@ -18,12 +18,10 @@ router.get("/:id", (req, res) => {
 });
 
 calculateVacation = (base = 10, date, fullYears, joinedAt) => {
-  const result = {};
   const diffTime = Math.abs(joinedAt - date);
   const diffYears = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) / 365;
   const daysAdded = diffYears - fullYears > 0 ? Math.ceil(diffYears) - fullYears : 0;
-  result.total = base + daysAdded;
-  return result;
+  return base + daysAdded;
 };
 
 module.exports = router;

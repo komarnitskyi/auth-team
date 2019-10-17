@@ -1,17 +1,17 @@
 const passport = require("passport");
-const fs = require("fs");
 const LocalStrategy = require("passport-local").Strategy;
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJWT = require("passport-jwt").ExtractJwt;
 const Users = require("../helpers/sequelizeInit").Users;
 const Levels = require("../helpers/sequelizeInit").Levels;
 const checkPassword = require("./cryptPassword").checkPassword;
+const hashSecretWord = require("./cryptPassword").hashPassword;
 
-const publicKey = fs.readFileSync("./public.pem");
+const secretWord = "authenticate";
 
 const jwtStrategy = new JwtStrategy({
     jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-    secretOrKey: publicKey
+    secretOrKey: hashSecretWord(secretWord)
   },
   function (jwtPayload, done) {
     if (Math.floor(Date.now() / 1000) > jwtPayload.iat) return done(null, false, {

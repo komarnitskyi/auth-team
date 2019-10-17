@@ -1,4 +1,5 @@
 const bcrypt = require("bcryptjs");
+const salt = bcrypt.genSaltSync(10);
 
 const checkPassword = async (userPass, password) => {
   const ans = await bcrypt.compare(password, userPass).then(isMatch => {
@@ -8,7 +9,6 @@ const checkPassword = async (userPass, password) => {
 };
 
 const hashPassword = password => {
-  const salt = bcrypt.genSaltSync(10);
   return bcrypt.hashSync(password, salt);
 };
 
