@@ -13,7 +13,7 @@ const users = require("./routes/users");
 const vacation = require("./routes/vacation");
 
 const app = express();
-const port = 6969;
+const port = process.env.PORT || 6969;
 
 require("./helpers/passport");
 
